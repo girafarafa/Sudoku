@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <div class="app">
+
+        <header class="header">
+            <div class="header-left">
+                <h1 class="logo">SUDOKU</h1>
+                <div class="dificulty-selector">
+                    <button class="diff-btn active" data-level="easy">Ușor</button>
+                    <button class="diff-btn" data-level="medium">Mediu</button>
+                    <button class="diff-btn" data-level="hard">Dificil</button>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="stat">
+                    <span class="stat-label">Timp:</span>
+                    <span class="stat-value" id="timer">00:00</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Hints:</span>
+                     <span class="stat-value" id="hint-count">0</span>
+                </div>
+                <button class="btn-new" id="btn-new">Joc Nou</button>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="board-section">
+                <!-- Tabla 9*9 generata din JS -->
+                 <div class="board" id="board" role="grid" aria-label="Tabla de Sudoku"></div>
+
+                 <div class="numpad" aria-label="Selectie cifra">
+                    <button class="num-btn" data-num="1">1</button>
+                    <button class="num-btn" data-num="2">2</button>
+                    <button class="num-btn" data-num="3">3</button>
+                    <button class="num-btn" data-num="4">4</button>
+                    <button class="num-btn" data-num="5">5</button>
+                    <button class="num-btn" data-num="6">6</button>
+                    <button class="num-btn" data-num="7">7</button>
+                    <button class="num-btn" data-num="8">8</button>
+                    <button class="num-btn" data-num="9">9</button> 
+                    <button class="num-btn erase-btn" data-num="0" aria-label="Sterge">X</button>
+                 </div>
+            </div>
+
+
+            <aside class="sidebar">
+
+                <div class="controls">
+
+                    <button class="ctrl-btn" id="btn-hint" title="Hint">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+                        Hint
+                    </button>
+
+                    <button class="ctrl-btn" id="btn-candidates" title="Candidati">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        Candidati
+                    </button>
+
+                    <button class="ctrl-btn" id="btn-solve" title="Solve animat">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        Solve
+                    </button>
+
+                    <button class="ctrl-btn" id="btn-undo" title="Undo">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                        Undo
+                    </button>
+
+                </div>
+
+                <div class="solve-panel" id="solve-panel" aria-hidden="true">
+                  <div class="solve-panel-header">
+                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Rezolvare pas cu pas
+                </div>
+                <div class="solve-steps" id="solve-steps"></div>
+                </div>
+
+                <div class="hint-panel" id="hint-panel">
+                    <div class="hint-panel-header">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        Hint
+                    </div>
+
+                    <p class="hint-text" id="hint-text">Selecteaza o celula si apasa Hint pentru a vedea logica din spatele urmatorului pas</p>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-title">Tehnici</div>
+                    <div class="legend-item">
+                        <span class="legend-dot-easy"></span>
+                        <span>Naked Single</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="legend-dot-medium"></span>
+                        <span>Hidden Single</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="legend-dot-hard"></span>
+                        <span>Backtracking</span>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <div class="win-overlay" id="win-overlay" aria-hidden="true">
+            <div class="win-card">
+                <div class="win-title">Rezolvat!</div>
+                <div class="win-stats">
+                    <div class="win-stat"><span class="win-stat-val" id="win-time">--:--</span><span class="win-stat-label">timp</span></div>
+                    <div class="win-stat"><span class="win-stat-val" id="win-hints">0</span><span class="win-stat-label">hints</span></div>  
+                </div>
+                <button class="btn-new win-btn" id="btn-win-new">Joc nou</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/board.js"></script>
+    <script src="js/solver.js"></script>
+    <script src="js/hints.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
