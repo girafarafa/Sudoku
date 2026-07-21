@@ -3,7 +3,13 @@
 O aplicație web modernă, rapidă și interactivă de Sudoku, creată în JavaScript nativ (Vanilla JS), HTML5 și CSS3. Proiectul include un sistem inteligent de indicii (hint-uri), calcul automat al candidaților, modul de rezolvare vizuală pas cu pas și un generator avansat de puzzle-uri cu garanția unei soluții unice.
 
 ---
+## 🌐 Live Demo / Accesare Online
 
+Jocul poate fi încercat direct în browser accesând linkul de mai jos:
+
+👉 **[Joacă Sudoku online pe Vercel](https://vercel.com/girafa-rafa/sudoku)**
+
+---
 ## ✨ Funcționalități Principale
 
 * **🎮 Experiență Interactivă de Joc:**
